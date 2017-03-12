@@ -7,32 +7,42 @@
 
 #include <string>
 #include <map>
+#include <typeinfo>
+#include <boost/any.hpp>
+
+#define OBJTYPE(type) decltype(typeid(type).name())
 
 namespace Jasonium
 {
     class Json
     {
     public:
+        struct JsonValue
+        {
+            JsonValue() {}
+            template <typename T>
+            JsonValue(T const &value) : _value(value) {}
+
+            template <typename T>
+            void    operator=(T const &value) { _value = value; }
+
+            template <typename T>
+            T   Value() const
+            { return (boost::any_cast<T>(_value)); }
+
+            boost::any  _value;
+
+        };
+
         Json();
         ~Json();
 
-        std::string &StringField(std::string const&);
-        int         &IntField(std::string const&);
-        bool        &BoolField(std::string const&);
-        Json        &JsonField(std::string const&);
+        JsonValue   &operator[](std::string);
 
-        std::map<std::string, std::string>  GetStringMap() const;
-        std::map<std::string, int>          GetIntMap() const;
-        std::map<std::string, bool>         GetBoolMap() const;
-        std::map<std::string, Json>         GetJsonMap() const;
-
-        Json        &Export(std::string const &fileName = "a.json");
+        //Json        &Export(std::string const &fileName = "a.json");
 
     private:
-        std::map<std::string, std::string>  _stringFields;
-        std::map<std::string, int>          _intFields;
-        std::map<std::string, bool>         _boolFields;
-        std::map<std::string, Json>         _jsonFields;
+        std::map<std::string, JsonValue> _data;
     };
 }
 

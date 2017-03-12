@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include <string>
+#include <typeinfo>
 
 #include "../src/Json.hpp"
 
@@ -11,13 +12,13 @@ int main()
 {
     Jasonium::Json    obj;
 
-    obj.StringField("lol") = "kek";
-    obj.IntField("mdr") = 42;
-    obj.BoolField("ptdr") = true;
-    std::cout << obj.StringField("lol") << std::endl;
-    std::cout << obj.IntField("mdr") << std::endl;
-    std::cout << obj.BoolField("ptdr") << std::endl;
-    obj.Export();
-    //std::cout << obj << std::endl;
+    /*obj.Export();*/
+
+    obj["test"] = 42;
+    obj["lol"] = "kek";
+    obj["ptdr"] = true;
+    std::cout << obj["test"].Value<int>() << std::endl;
+    std::cout << obj["lol"].Value<OBJTYPE(std::string)>() << std::endl;
+    std::cout << obj["ptdr"].Value<bool>() << std::endl;
     return (0);
 }
