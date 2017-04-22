@@ -8,13 +8,23 @@
 
 #include "Json.hpp"
 
-namespace Jasonium
+namespace ium
 {
     /*
      *   Ctor & Dtor
      */
 
     Json::Json() {}
+
+    Json::Json(const Json &js) : _data(js._data) {}
+
+    Json    &Json::operator=(const Json &js)
+    {
+        if (this == &js)
+            return (*this);
+        _data = js._data;
+        return (*this);
+    }
 
     Json::~Json() {}
 
@@ -23,15 +33,4 @@ namespace Jasonium
      */
 
     Json::JsonValue &Json::operator[](std::string key) { return (_data[key]); }
-
-    /*Json  &Json::Export(std::string const &fileName)
-    {
-        std::ofstream   file(fileName, std::ofstream::out);
-
-        if (!file.is_open())
-            return (*this);
-        file << *this;
-        file.close();
-        return (*this);
-    }*/
 }

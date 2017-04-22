@@ -10,9 +10,9 @@
 #include <typeinfo>
 #include <boost/any.hpp>
 
-#define OBJTYPE(type) decltype(typeid(type).name())
+#define TYPENAME(type) decltype(typeid(type).name())
 
-namespace Jasonium
+namespace ium
 {
     class Json
     {
@@ -31,15 +31,14 @@ namespace Jasonium
             { return (boost::any_cast<T>(_value)); }
 
             boost::any  _value;
-
         };
 
         Json();
+        Json(const Json&);
+        Json    &operator=(const Json&);
         ~Json();
 
         JsonValue   &operator[](std::string);
-
-        //Json        &Export(std::string const &fileName = "a.json");
 
     private:
         std::map<std::string, JsonValue> _data;
